@@ -8,10 +8,11 @@ test = read.csv("Data/test.csv", header = TRUE, stringsAsFactors = FALSE)
 # make target a factor
 train$target = as.factor(train$target)
 
-rf = randomForest(target ~., data = train, ntree=1000, do.trace=100, importance = TRUE)
+rf = randomForest(target ~., data = train[,-1], ntree=500, do.trace=50, importance=TRUE)
 
-predictClasses = predict(rf, test, type = "prob")
-id = 1:nrow(test)
-submission = cbind(id, predictClasses)
+predicted = predict(rf, test[,-1], type = "prob")
 
-write.csv(submission, "Output/random_forest_3.csv", row.names = FALSE, quote = FALSE)
+id<-test[,1]
+submission<-cbind(id,predicted)
+
+write.csv(submission, "Output/random_forest_4.csv", row.names = FALSE, quote = FALSE)
