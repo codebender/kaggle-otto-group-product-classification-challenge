@@ -23,15 +23,23 @@ param <- list("objective" = "multi:softprob",
               "nthread" = 8,
               'max_depth' = 10,
               "min_child_weight" = 4,
-              "gamma" = 1)
+              "gamma" = 1,
+              "subsample" = .9,
+              "colsample_bytree" = .8)
+
+#shuffle
+trind <- trind[sample(nrow(trind)),]
 
 # Run Cross Valication
-cv.nround = 250
+cv.nround = 200
 bst.cv = xgb.cv(param=param, data = x[trind,], label = y,
                 nfold = 3, nrounds=cv.nround)
 
+#shuffle
+trind <- trind[sample(nrow(trind)),]
+
 # Train the model
-nround = 250
+nround = 200
 bst = xgboost(param=param, data = x[trind,], label = y, nrounds=nround)
 
 # Make prediction
@@ -43,4 +51,4 @@ pred = t(pred)
 pred = format(pred, digits=2,scientific=F) # shrink the size of submission
 pred = data.frame(1:nrow(pred),pred)
 names(pred) = c('id', paste0('Class_',1:9))
-write.csv(pred,file='Output/xgboost_5.csv', quote=FALSE,row.names=FALSE)
+write.csv(pred,file='Output/xgboost_6.csv', quote=FALSE,row.names=FALSE)
