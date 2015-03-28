@@ -13,3 +13,4 @@
 # don't commit submissions
 
 Output/*.csv
+Data/*
