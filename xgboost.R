@@ -19,7 +19,7 @@ x = matrix(as.numeric(x),nrow(x),ncol(x))
 trind = 1:length(y)
 teind = (nrow(train)+1):nrow(x)
 
-# Set necessary parameter
+# Set necessary parameters
 param <- list("objective" = "multi:softprob",
               "eval_metric" = "mlogloss",
               "num_class" = 9,
@@ -32,14 +32,14 @@ param <- list("objective" = "multi:softprob",
               "min_child_weight" = 3,
               "subsample" = .9,
               "colsample_bytree" = .6)
+nround = 150
 
 # Run Cross Valication
-cv.nround = 200
+
 bst.cv = xgb.cv(param=param, data = x[trind,], label = y,
-                nfold = 3, nrounds=cv.nround)
+                nfold = 3, nrounds=nround)
 
 # Train the model
-nround = 200
 bst = xgboost(param=param, data = x[trind,], label = y, nrounds=nround)
 
 # Make prediction
@@ -51,4 +51,4 @@ pred = t(pred)
 pred = format(pred, digits=2,scientific=F) # shrink the size of submission
 pred = data.frame(1:nrow(pred),pred)
 names(pred) = c('id', paste0('Class_',1:9))
-write.csv(pred,file='Output/xgboost_8.csv', quote=FALSE,row.names=FALSE)
+write.csv(pred,file='Output/xgboost_9.csv', quote=FALSE,row.names=FALSE)
