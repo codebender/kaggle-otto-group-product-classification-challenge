@@ -24,11 +24,14 @@ param <- list("objective" = "multi:softprob",
               "eval_metric" = "mlogloss",
               "num_class" = 9,
               "nthread" = 8,
-              'max_depth' = 10,
-              "min_child_weight" = 4,
-              "gamma" = 1,
+              "bst:eta" = .2,
+              "bst:max_depth" = 10,
+              "lambda" = 1,
+              "lambda_bias" = 0,
+              "alpha" = .8,
+              "min_child_weight" = 3,
               "subsample" = .9,
-              "colsample_bytree" = .8)
+              "colsample_bytree" = .6)
 
 # Run Cross Valication
 cv.nround = 200
@@ -48,4 +51,4 @@ pred = t(pred)
 pred = format(pred, digits=2,scientific=F) # shrink the size of submission
 pred = data.frame(1:nrow(pred),pred)
 names(pred) = c('id', paste0('Class_',1:9))
-write.csv(pred,file='Output/xgboost_7.csv', quote=FALSE,row.names=FALSE)
+write.csv(pred,file='Output/xgboost_8.csv', quote=FALSE,row.names=FALSE)
