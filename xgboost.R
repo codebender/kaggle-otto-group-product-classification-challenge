@@ -6,6 +6,9 @@ test = read.csv('Data/test.csv',header=TRUE,stringsAsFactors = F)
 train = train[,-1]
 test = test[,-1]
 
+#shuffle
+train <- train[sample(nrow(train)),]
+
 y = train[,ncol(train)]
 y = gsub('Class_','',y)
 y = as.integer(y)-1 #xgboost take features in [0,numOfClass)
@@ -27,16 +30,10 @@ param <- list("objective" = "multi:softprob",
               "subsample" = .9,
               "colsample_bytree" = .8)
 
-#shuffle
-trind <- trind[sample(nrow(trind)),]
-
 # Run Cross Valication
 cv.nround = 200
 bst.cv = xgb.cv(param=param, data = x[trind,], label = y,
                 nfold = 3, nrounds=cv.nround)
-
-#shuffle
-trind <- trind[sample(nrow(trind)),]
 
 # Train the model
 nround = 200
@@ -51,4 +48,4 @@ pred = t(pred)
 pred = format(pred, digits=2,scientific=F) # shrink the size of submission
 pred = data.frame(1:nrow(pred),pred)
 names(pred) = c('id', paste0('Class_',1:9))
-write.csv(pred,file='Output/xgboost_6.csv', quote=FALSE,row.names=FALSE)
+write.csv(pred,file='Output/xgboost_7.csv', quote=FALSE,row.names=FALSE)
