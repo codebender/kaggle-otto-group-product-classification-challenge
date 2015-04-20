@@ -29,7 +29,7 @@ param <- list("objective" = "multi:softprob",
               "lambda" = 1,
               "lambda_bias" = 0,
               "alpha" = .8,
-              "min_child_weight" = 3,
+              "min_child_weight" = 4,
               "subsample" = .9,
               "colsample_bytree" = .6)
 nround = 150
@@ -51,4 +51,4 @@ pred = t(pred)
 pred = format(pred, digits=2,scientific=F) # shrink the size of submission
 pred = data.frame(1:nrow(pred),pred)
 names(pred) = c('id', paste0('Class_',1:9))
-write.csv(pred,file='Output/xgboost_9.csv', quote=FALSE,row.names=FALSE)
+write.csv(pred,file='Output/xgboost_corrected_params_2.csv', quote=FALSE,row.names=FALSE)
